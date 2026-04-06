@@ -73,18 +73,6 @@ export default function WelcomeCard({ hostData, onGetDirections }: Props) {
                     </p>
                 </div>
 
-                {/* Feature highlights */}
-                <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
-                    <div className="bg-white/5 border border-white/10 px-4 py-2 rounded-2xl flex items-center gap-2">
-                        <span className="text-base text-white">🚶‍♂️</span>
-                        <span className="text-white/60 text-[11px] font-bold uppercase tracking-wider">Live Navigation</span>
-                    </div>
-                    <div className="bg-white/5 border border-white/10 px-4 py-2 rounded-2xl flex items-center gap-2">
-                        <span className="text-base text-white">⚡</span>
-                        <span className="text-white/60 text-[11px] font-bold uppercase tracking-wider">Quick ETA</span>
-                    </div>
-                </div>
-
                 {/* Call to action */}
                 <CustomButton
                     onClick={handleClick}
@@ -113,4 +101,4 @@ export default function WelcomeCard({ hostData, onGetDirections }: Props) {
             </div>
         </div>
     );
-}
+}
