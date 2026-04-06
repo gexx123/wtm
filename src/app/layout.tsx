@@ -17,16 +17,16 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'WayToMe — Campus Guest Navigation',
+  title: 'WayTm — Campus Guest Navigation',
   description: 'Share your location as a link. Guests get a branded welcome screen and live walking directions to find you on campus or at the office.',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'WayToMe',
+    title: 'WayTm',
   },
   openGraph: {
-    title: 'WayToMe — Campus Guest Navigation',
+    title: 'WayTm — Campus Guest Navigation',
     description: 'Find your way with live walking directions shared by your host.',
     type: 'website',
   },

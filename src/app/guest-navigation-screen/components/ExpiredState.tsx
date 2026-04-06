@@ -30,7 +30,7 @@ export default function ExpiredState({ hostData }: Props) {
                         <div>
                             <p className="text-white/90 text-sm font-bold mb-1">Safety First</p>
                             <p className="text-white/60 text-xs leading-relaxed font-medium">
-                                For security, location links shared via WayToMe auto-expire after 24 hours. 
+                                For security, location links shared via WayTm auto-expire after 24 hours. 
                                 The host <span className="text-white font-bold">{hostData.hostName}</span> will need to generate a new link for you.
                             </p>
                         </div>
@@ -57,7 +57,7 @@ export default function ExpiredState({ hostData }: Props) {
                 </div>
 
                 <p className="mt-12 text-white/20 text-[10px] font-bold uppercase tracking-[0.2em]">
-                    WayToMe &bull; Campus Navigation
+                    WayTm &bull; Campus Navigation
                 </p>
             </div>
         </div>

@@ -22,7 +22,7 @@ export default function LoadingState() {
                     </div>
                 </div>
 
-                <h2 className="text-2xl font-extrabold text-white mb-2 tracking-tight">Initializing WayToMe</h2>
+                <h2 className="text-2xl font-extrabold text-white mb-2 tracking-tight">Initializing WayTm</h2>
                 <div className="flex items-center gap-1.5 justify-center py-2 px-3 rounded-full bg-white/5 border border-white/10">
                     <div className="flex gap-1">
                         <span className="w-1.5 h-1.5 bg-accent-500 rounded-full animate-bounce [animation-delay:-0.3s]" />

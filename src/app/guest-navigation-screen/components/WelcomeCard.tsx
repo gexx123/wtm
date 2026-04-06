@@ -107,7 +107,7 @@ export default function WelcomeCard({ hostData, onGetDirections }: Props) {
                 <div className="flex items-center justify-center gap-2 mb-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                     <span className="text-white/40 text-[9px] font-bold uppercase tracking-[0.2em]">
-                        WayToMe Verified Session
+                        WayTm Verified Session
                     </span>
                 </div>
             </div>

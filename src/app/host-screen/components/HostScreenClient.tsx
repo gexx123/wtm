@@ -171,7 +171,7 @@ export default function HostScreenClient() {
             </main>
 
             <footer className="text-center py-6 text-xs text-navy-400 font-jakarta">
-                <span>WayToMe &mdash; Campus Guest Navigation</span>
+                <span>WayTm &mdash; Campus Guest Navigation</span>
             </footer>
         </div>
     );

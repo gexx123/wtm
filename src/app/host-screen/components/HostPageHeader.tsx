@@ -7,7 +7,7 @@ export default function HostPageHeader() {
             <div className="flex items-center gap-2.5">
                 <AppLogo size={32} />
                 <span className="font-jakarta font-700 text-lg tracking-tight text-navy-600">
-                    WayToMe
+                    WayTm
                 </span>
             </div>
             <span className="text-xs font-medium text-navy-400 bg-accent-50 border border-accent-100 px-3 py-1 rounded-full">

@@ -1,4 +1,4 @@
--- Create host_sessions table for WayToMe guest navigation
+-- Create host_sessions table for WayTm guest navigation
 CREATE TABLE IF NOT EXISTS public.host_sessions (
   id TEXT PRIMARY KEY,
   host_name TEXT NOT NULL,
