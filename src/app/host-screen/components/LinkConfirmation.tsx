@@ -51,11 +51,11 @@ export default function LinkConfirmation({ session, guestLink, onReset }: Props)
         <div className="animate-in-fade space-y-6">
             {/* Header */}
             <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 mb-4">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 mb-4 animate-in-bounce">
                     <Check className="w-8 h-8 text-emerald-600" strokeWidth={3} />
                 </div>
-                <h1 className="text-2xl font-extrabold text-navy-600 mb-2">Location Ready!</h1>
-                <p className="text-sm text-navy-400 font-medium">
+                <h1 className="text-2xl font-extrabold text-navy-600 mb-2 animate-in-slide-up">Location Ready!</h1>
+                <p className="text-sm text-navy-400 font-medium animate-in-slide-up-limited [animation-delay:200ms]">
                     Your guest can now find you at <span className="text-navy-600 font-bold">{session.orgName}</span>
                 </p>
             </div>

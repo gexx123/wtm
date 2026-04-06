@@ -20,6 +20,7 @@ export const metadata: Metadata = {
   title: 'WayTm — Campus Guest Navigation',
   description: 'Share your location as a link. Guests get a branded welcome screen and live walking directions to find you on campus or at the office.',
   manifest: '/manifest.json',
+  themeColor: '#1B2A4A',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
@@ -30,8 +31,14 @@ export const metadata: Metadata = {
     description: 'Find your way with live walking directions shared by your host.',
     type: 'website',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'WayTm — Campus Guest Navigation',
+    description: 'Find your way with live walking directions shared by your host.',
+  },
   icons: {
-    icon: [{ url: '/favicon.ico', type: 'image/x-icon' }],
+    icon: '/favicon.ico',
+    apple: '/apple-icon.png',
   },
 };
 
