@@ -4,10 +4,15 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('Missing Supabase environment variables. Database features will be disabled.');
+  if (process.env.NODE_ENV === 'development') {
+    console.warn('Missing Supabase environment variables. Database features will be disabled.');
+  }
 }
 
 // Singleton instance for client-side usage
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Fallback to empty strings only if they exist, otherwise we avoid calling createClient during build if possible
+export const supabase = (supabaseUrl && supabaseAnonKey) 
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : (null as any); // Type cast to prevent breakdown elsewhere if they haven't set it yet
 
 export default supabase;
