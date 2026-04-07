@@ -3,6 +3,7 @@ import { CheckCircle2, MessageSquare, X } from 'lucide-react';
 import GlassCard from '@/components/ui/GlassCard';
 import CustomButton from '@/components/ui/CustomButton';
 import { supabase } from '@/lib/supabase';
+import { toast } from 'sonner';
 
 type Props = {
   hostName: string;
@@ -15,9 +16,21 @@ export default function ArrivalOverlay({ hostName, hostId, onClose }: Props) {
 
   const handleImHere = async () => {
     setLoading(true);
-    await supabase.from('host_sessions').update({ guest_arrived: true }).eq('id', hostId);
-    setLoading(false);
-    onClose();
+    try {
+      const { error } = await supabase
+        .from('host_sessions')
+        .update({ guest_arrived: true })
+        .eq('id', hostId);
+      
+      if (error) throw error;
+      
+      onClose();
+    } catch (err: any) {
+      console.error('Arrival update failed:', err);
+      toast.error('Notification failed. Please check your connection.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

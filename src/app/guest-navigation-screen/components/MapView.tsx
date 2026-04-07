@@ -152,7 +152,7 @@ export default function MapView({ hostData, guestCoords: initialGuestCoords }: P
   // Distance Calculation and Arrival check
   useEffect(() => {
     const dist = haversine(guestCoords.lat, guestCoords.lng, hostData.lat, hostData.lng);
-    if (dist < 15 && !isArrived) {
+    if (dist < 25 && !isArrived) {
       setIsArrived(true);
     }
   }, [guestCoords, hostData, isArrived]);
