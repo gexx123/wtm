@@ -16,10 +16,9 @@ export default function BrandedSplashScreen({
 }: Props) {
   return (
     <div className="fixed inset-0 z-[1000] flex items-center justify-center p-6 font-jakarta overflow-hidden bg-[#0A1126]">
-      {/* Full-screen background image */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 flex items-center justify-center">
         <img 
-          src="/assets/splash-bg.png" 
+          src="/icon-512.png" 
           alt="WayTm Welcome" 
           className="w-full h-full object-cover animate-in-fade"
         />
