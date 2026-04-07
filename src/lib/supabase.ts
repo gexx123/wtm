@@ -11,8 +11,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
 
 // Singleton instance for client-side usage
 // Fallback to empty strings only if they exist, otherwise we avoid calling createClient during build if possible
-export const supabase = (supabaseUrl && supabaseAnonKey) 
-  ? createClient(supabaseUrl, supabaseAnonKey)
-  : (null as any); // Type cast to prevent breakdown elsewhere if they haven't set it yet
+export const supabase =
+  supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : (null as any); // Type cast to prevent breakdown elsewhere if they haven't set it yet
 
 export default supabase;

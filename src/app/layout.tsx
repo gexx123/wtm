@@ -18,7 +18,8 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: 'WayTm — Campus Guest Navigation',
-  description: 'Share your location as a link. Guests get a branded welcome screen and live walking directions to find you on campus or at the office.',
+  description:
+    'Share your location as a link. Guests get a branded welcome screen and live walking directions to find you on campus or at the office.',
   manifest: '/manifest.json',
   themeColor: '#1B2A4A',
   appleWebApp: {
@@ -42,14 +43,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${jakarta.variable} font-sans`} suppressHydrationWarning>
-      <body className="antialiased font-jakarta">
-        {children}
-      </body>
+      <body className="antialiased font-jakarta">{children}</body>
     </html>
   );
 }

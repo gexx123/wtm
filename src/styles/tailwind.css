@@ -4,15 +4,15 @@
 
 @layer base {
   :root {
-    --navy-primary: #1B2A4A;
-    --accent-primary: #3B82F6;
+    --navy-primary: #1b2a4a;
+    --accent-primary: #3b82f6;
     --glass-bg: rgba(255, 255, 255, 0.7);
     --glass-border: rgba(255, 255, 255, 0.3);
   }
 
   body {
     @apply text-slate-900 bg-slate-50 antialiased selection:bg-accent-200 selection:text-accent-900;
-    font-feature-settings: "ss01", "ss02", "cv01", "cv02";
+    font-feature-settings: 'ss01', 'ss02', 'cv01', 'cv02';
   }
 }
 
@@ -64,11 +64,21 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
