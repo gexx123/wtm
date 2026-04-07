@@ -18,12 +18,12 @@ export default function BrandedSplashScreen({
     <div className="fixed inset-0 z-[1000] flex items-center justify-center p-6 font-jakarta overflow-hidden bg-white">
       <div className="absolute inset-0 z-0 flex items-center justify-center">
         <img 
-          src="/icon-512.png" 
+          src="/assets/image2.png" 
           alt="WayTm Welcome" 
           className="w-full h-full object-cover animate-in-fade"
         />
         {/* Light Overlay for depth */}
-        <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-white/40 backdrop-blur-[2px]" />
       </div>
 
       {/* Animated background glows */}
