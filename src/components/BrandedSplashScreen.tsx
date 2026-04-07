@@ -18,7 +18,7 @@ export default function BrandedSplashScreen({
     <div className="fixed inset-0 z-[1000] flex items-center justify-center p-6 font-jakarta overflow-hidden bg-white">
       <div className="absolute inset-0 z-0 flex items-center justify-center">
         <img 
-          src="/assets/image2.png" 
+          src="/assets/splash-bg.png" 
           alt="WayTm Welcome" 
           className="w-full h-full object-cover animate-in-fade"
         />
