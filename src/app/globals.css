@@ -11,7 +11,7 @@
   }
 
   body {
-    @apply text-slate-900 bg-slate-50 antialiased selection:bg-accent-200 selection:text-accent-900;
+    @apply text-slate-900 bg-[#0A1126] antialiased selection:bg-accent-200 selection:text-accent-900;
     font-feature-settings: 'ss01', 'ss02', 'cv01', 'cv02';
   }
 }

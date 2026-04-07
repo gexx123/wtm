@@ -4,8 +4,8 @@
   "description": "Premium Campus Guest Navigation",
   "start_url": "/host-screen",
   "display": "standalone",
-  "background_color": "#1B2A4A",
-  "theme_color": "#1B2A4A",
+  "background_color": "#0A1126",
+  "theme_color": "#0A1126",
   "icons": [
     {
       "src": "/icon-192.png",

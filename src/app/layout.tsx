@@ -25,18 +25,13 @@ export const metadata: Metadata = {
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
-    statusBarStyle: 'default',
-    title: 'WayTm',
-  },
-  openGraph: {
-    title: 'WayTm — Campus Guest Navigation',
-    description: 'Find your way with live walking directions shared by your host.',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'WayTm — Campus Guest Navigation',
-    description: 'Find your way with live walking directions shared by your host.',
+    statusBarStyle: 'black-translucent',
+    title: 'WayTm — Navigation',
+    startupImage: [
+      {
+        url: '/assets/splash-bg.png',
+      },
+    ],
   },
   icons: {
     icon: [
