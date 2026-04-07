@@ -5,7 +5,7 @@ import { Toaster } from 'sonner';
 import WelcomeCard from './WelcomeCard';
 import MapView from './MapView';
 import ExpiredState from './ExpiredState';
-import LoadingState from './LoadingState';
+import BrandedSplashScreen from '@/components/BrandedSplashScreen';
 import { supabase } from '@/lib/supabase';
 
 export type HostData = {
@@ -130,7 +130,7 @@ export default function GuestNavigationClient() {
     <div className="min-h-screen bg-white font-jakarta">
       <Toaster position="bottom-center" richColors />
 
-      {appState === 'loading' && <LoadingState />}
+      {appState === 'loading' && <BrandedSplashScreen />}
 
       {appState === 'welcome' && hostData && (
         <WelcomeCard hostData={hostData} onGetDirections={handleGetDirections} />

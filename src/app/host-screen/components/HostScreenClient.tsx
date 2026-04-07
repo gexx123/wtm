@@ -9,6 +9,7 @@ import LinkConfirmation from './LinkConfirmation';
 import HostPageHeader from './HostPageHeader';
 import LocationPicker from './LocationPicker';
 import HostTrackingView from './HostTrackingView';
+import BrandedSplashScreen from '@/components/BrandedSplashScreen';
 import { supabase } from '@/lib/supabase';
 
 export type HostFormValues = {
@@ -231,11 +232,20 @@ export default function HostScreenClient() {
 
       <main className="flex-1 flex items-center justify-center px-4 py-6 sm:py-10">
         <div className="w-full max-w-md">
-          {(screenState === 'form' || screenState === 'capturing' || screenState === 'pinpointing' || screenState === 'error') && (
+          {/* Branded Splash Screen during pinpointing/capturing */}
+          {(screenState === 'pinpointing' || screenState === 'capturing') && (
+            <BrandedSplashScreen 
+              title={screenState === 'pinpointing' ? "Pinpointing Location" : "Generating Share Link"}
+              subtitle={screenState === 'pinpointing' ? "Converging to High Precision" : "Finalizing session..."}
+              accuracy={accuracy}
+            />
+          )}
+
+          {(screenState === 'form' || screenState === 'error') && (
             <HostForm
               form={form}
               onSubmit={handleShareLocation}
-              isCapturing={screenState === 'capturing' || screenState === 'pinpointing'}
+              isCapturing={false}
               accuracy={accuracy}
               error={geoError}
               onSimulate={handleSimulateLocation}
