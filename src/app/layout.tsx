@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     title: 'WayTm — Navigation',
     startupImage: [
       {
-        url: '/assets/splash-bg.png',
+        url: '/icon-512.png',
       },
     ],
   },
