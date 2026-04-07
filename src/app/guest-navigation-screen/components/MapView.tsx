@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Target, Navigation2 } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 import { HostData, GuestCoords } from './GuestNavigationClient';
 import FloatingInfoCard from './FloatingInfoCard';
 import CustomButton from '@/components/ui/CustomButton';
@@ -40,16 +41,13 @@ export default function MapView({ hostData, guestCoords: initialGuestCoords }: P
   const [routeLoading, setRouteLoading] = useState(true);
   const [routeError, setRouteError] = useState(false);
   const [isArrived, setIsArrived] = useState(false);
-  const [isSimulating, setIsSimulating] = useState(false);
 
   const LRef = useRef<any>(null);
 
   // Update guest coords whenever they change via props (real GPS)
   useEffect(() => {
-    if (!isSimulating) {
-      setGuestCoords(initialGuestCoords);
-    }
-  }, [initialGuestCoords, isSimulating]);
+    setGuestCoords(initialGuestCoords);
+  }, [initialGuestCoords]);
 
   const handleRecenter = () => {
     if (mapInstanceRef.current) {
@@ -58,34 +56,6 @@ export default function MapView({ hostData, guestCoords: initialGuestCoords }: P
         duration: 1,
       });
     }
-  };
-
-  // Simulation logic to walk toward the host
-  const handleSimulateTrip = () => {
-    if (isSimulating) return;
-    setIsSimulating(true);
-    setIsArrived(false);
-
-    const steps = 40;
-    const interval = 200;
-    let currentStep = 0;
-
-    const startLat = guestCoords.lat;
-    const startLng = guestCoords.lng;
-
-    const timer = setInterval(() => {
-      currentStep++;
-      const progress = currentStep / steps;
-      const newLat = startLat + (hostData.lat - startLat) * progress * 0.99;
-      const newLng = startLng + (hostData.lng - startLng) * progress * 0.99;
-
-      setGuestCoords({ lat: newLat, lng: newLng });
-
-      if (currentStep >= steps) {
-        clearInterval(timer);
-        setIsSimulating(false);
-      }
-    }, interval);
   };
 
   // Initialize Map and Markers
@@ -99,8 +69,6 @@ export default function MapView({ hostData, guestCoords: initialGuestCoords }: P
       LRef.current = L;
 
       if (!isMounted || mapInstanceRef.current) return;
-
-      await import('leaflet/dist/leaflet.css');
 
       const map = L.map(mapRef.current, {
         center: [hostData.lat, hostData.lng],
@@ -163,6 +131,16 @@ export default function MapView({ hostData, guestCoords: initialGuestCoords }: P
       }
     };
   }, [hostData]);
+
+  // Fix for white patches: invalidate size after a small delay to ensure full render
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.invalidateSize();
+      }
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [mapInstanceRef.current]);
 
   // Move guest marker when coords change
   useEffect(() => {
@@ -241,44 +219,31 @@ export default function MapView({ hostData, guestCoords: initialGuestCoords }: P
 
       {/* Arrival State Overlay */}
       {isArrived && (
-        <ArrivalOverlay hostName={hostData.hostName} onClose={() => setIsArrived(false)} />
+        <ArrivalOverlay hostName={hostData.hostName} hostId={hostData.id} onClose={() => setIsArrived(false)} />
       )}
 
-      <div className="absolute top-6 left-6 right-6 z-[1001] pointer-events-none">
-        <div className="bg-white/80 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/50 shadow-sm inline-flex items-center gap-3">
+      <div className="absolute top-4 sm:top-6 left-4 sm:left-6 right-4 sm:right-6 z-[1001] pointer-events-none">
+        <div className="bg-white/80 backdrop-blur-md px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl border border-white/50 shadow-sm inline-flex items-center gap-2 sm:gap-3">
           <Navigation2
-            size={16}
-            className={`fill-current ${travelMode === 'drive' ? 'text-emerald-500' : 'text-accent-500'}`}
+            size={14}
+            className={`fill-current sm:w-4 sm:h-4 ${travelMode === 'drive' ? 'text-emerald-500' : 'text-accent-500'}`}
           />
-          <span className="text-[10px] font-black text-navy-600 uppercase tracking-widest leading-none">
+          <span className="text-[9px] sm:text-[10px] font-black text-navy-600 uppercase tracking-widest leading-none">
             Active Navigation
           </span>
         </div>
       </div>
 
-      <div className="absolute top-24 right-6 z-[1001] flex flex-col gap-3">
+      <div className="absolute top-20 sm:top-24 right-4 sm:right-6 z-[1001] flex flex-col gap-2 sm:gap-3">
         <CustomButton
           variant="primary"
           size="sm"
           onClick={handleRecenter}
-          className="!p-3 !rounded-2xl shadow-floating bg-white !text-navy-600 hover:!bg-slate-50 border border-slate-100 transition-all active:scale-95"
-          icon={<Target size={20} />}
+          className="!p-2.5 sm:!p-3 !rounded-xl sm:!rounded-2xl shadow-floating bg-white !text-navy-600 hover:!bg-slate-50 border border-slate-100 transition-all active:scale-95"
+          icon={<Target size={18} className="sm:w-5 sm:h-5" />}
         >
           <span className="sr-only">Recenter</span>
         </CustomButton>
-
-        {process.env.NODE_ENV === 'development' && (
-          <button
-            onClick={handleSimulateTrip}
-            className={`p-3 rounded-2xl shadow-floating border transition-all active:scale-95 flex items-center justify-center ${
-              isSimulating
-                ? 'bg-amber-50 text-amber-600 border-amber-100'
-                : 'bg-white text-navy-600 border-slate-100'
-            }`}
-          >
-            <span className="text-lg">🏃</span>
-          </button>
-        )}
       </div>
 
       <FloatingInfoCard

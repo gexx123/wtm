@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Toaster } from 'sonner';
@@ -8,6 +8,7 @@ import HostForm from './HostForm';
 import LinkConfirmation from './LinkConfirmation';
 import HostPageHeader from './HostPageHeader';
 import LocationPicker from './LocationPicker';
+import HostTrackingView from './HostTrackingView';
 import { supabase } from '@/lib/supabase';
 
 export type HostFormValues = {
@@ -24,7 +25,7 @@ export type HostSession = {
   createdAt: string;
 };
 
-type ScreenState = 'form' | 'capturing' | 'pinpointing' | 'refining' | 'ready' | 'error';
+type ScreenState = 'form' | 'capturing' | 'pinpointing' | 'refining' | 'ready' | 'tracking' | 'error';
 
 export default function HostScreenClient() {
   const [screenState, setScreenState] = useState<ScreenState>('form');
@@ -33,6 +34,7 @@ export default function HostScreenClient() {
   const [accuracy, setAccuracy] = useState<number | null>(null);
   const [tempCoords, setTempCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [tempValues, setTempValues] = useState<HostFormValues | null>(null);
+  const [isGuestActive, setIsGuestActive] = useState(false);
 
   const form = useForm<HostFormValues>({
     defaultValues: { hostName: '', orgName: '' },
@@ -48,11 +50,14 @@ export default function HostScreenClient() {
     return result;
   };
 
-  // Save the final refined coordinates to Supabase
   const finalizeCapture = async (lat: number, lng: number, values: HostFormValues) => {
     setScreenState('capturing');
     const id = generateId();
     const now = new Date().toISOString();
+    
+    // Privacy cleanup: Delete all sessions older than 24 hours whenever a new session is created.
+    const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    await supabase.from('host_sessions').delete().lt('created_at', yesterday);
 
     const { error } = await supabase.from('host_sessions').insert([
       {
@@ -100,8 +105,8 @@ export default function HostScreenClient() {
 
     let bestReading: GeolocationPosition | null = null;
     let settled = false;
-    const SETTLING_TIME = 6000;
-    const PERFECT_ACCURACY = 8;
+    const SETTLING_TIME = 2500;
+    const PERFECT_ACCURACY = 20;
 
     const goToRefine = (lat: number, lng: number) => {
       if (settled) return;
@@ -190,12 +195,41 @@ export default function HostScreenClient() {
     ? `${typeof window !== 'undefined' ? window.location.origin : ''}/guest-navigation-screen?id=${session.id}`
     : '';
 
+  // Auto-transition to tracking view if guest starts navigation
+  useEffect(() => {
+    if (screenState === 'ready' && session?.id) {
+      const channel = supabase
+        .channel(`host_auto_track_${session.id}`)
+        .on(
+          'postgres_changes',
+          {
+            event: 'UPDATE',
+            schema: 'public',
+            table: 'host_sessions',
+            filter: `id=eq.${session.id}`,
+          },
+          (payload: any) => {
+            const { guest_lat, guest_lng } = payload.new;
+            if (guest_lat && guest_lng) {
+              setIsGuestActive(true);
+              setScreenState('tracking');
+            }
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    }
+  }, [screenState, session?.id]);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-accent-50 flex flex-col font-jakarta">
       <Toaster position="bottom-center" richColors />
       <HostPageHeader />
 
-      <main className="flex-1 flex items-center justify-center px-4 py-10">
+      <main className="flex-1 flex items-center justify-center px-4 py-6 sm:py-10">
         <div className="w-full max-w-md">
           {(screenState === 'form' || screenState === 'capturing' || screenState === 'pinpointing' || screenState === 'error') && (
             <HostForm
@@ -223,7 +257,20 @@ export default function HostScreenClient() {
           )}
 
           {screenState === 'ready' && session && (
-            <LinkConfirmation session={session} guestLink={guestLink} onResetAction={handleReset} />
+            <LinkConfirmation 
+              session={session} 
+              guestLink={guestLink} 
+              isGuestActive={isGuestActive}
+              onResetAction={handleReset} 
+              onTrackGuestAction={() => setScreenState('tracking')}
+            />
+          )}
+
+          {screenState === 'tracking' && session && (
+            <HostTrackingView 
+              session={session} 
+              onExitAction={() => setScreenState('ready')} 
+            />
           )}
         </div>
       </main>

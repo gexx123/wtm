@@ -1,0 +1,44 @@
+﻿
+> waytm@0.1.0 lint
+> next lint
+
+
+./src/app/guest-navigation-screen/components/ArrivalOverlay.tsx
+2:39  Warning: 'X' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/app/guest-navigation-screen/components/GuestNavigationClient.tsx
+38:10  Warning: 'sessionId' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/app/guest-navigation-screen/components/MapView.tsx
+33:33  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+34:32  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+35:33  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+45:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+165:6  Warning: React Hook useEffect has missing dependencies: 'guestCoords.lat' and 'guestCoords.lng'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/host-screen/components/LinkConfirmation.tsx
+26:14  Warning: 'err' is defined but never used. Allowed unused caught errors must match /^_/u.  @typescript-eslint/no-unused-vars
+39:16  Warning: 'err' is defined but never used. Allowed unused caught errors must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/components/ui/AppIcon.tsx
+17:18  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+30:86  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/components/ui/AppImage.tsx
+22:18  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+77:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+118:9  Warning: Image elements must have an alt prop, either with meaningful text, or an empty string for decorative images.  jsx-a11y/alt-text
+130:5  Warning: Image elements must have an alt prop, either with meaningful text, or an empty string for decorative images.  jsx-a11y/alt-text
+
+./src/contexts/AuthContext.tsx
+6:35  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+22:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+23:42  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+33:61  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+42:50  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+42:64  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/lib/supabase.ts
+15:90  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules

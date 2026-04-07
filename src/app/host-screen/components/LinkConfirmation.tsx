@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Check, Copy, Share2, ArrowLeft, ExternalLink, QrCode } from 'lucide-react';
+import { Check, Copy, Share2, ArrowLeft, ExternalLink, QrCode, Target } from 'lucide-react';
 import { toast } from 'sonner';
 import { HostSession } from './HostScreenClient';
 import CustomButton from '@/components/ui/CustomButton';
@@ -10,10 +10,12 @@ import GlassCard from '@/components/ui/GlassCard';
 type Props = {
   session: HostSession;
   guestLink: string;
+  isGuestActive: boolean;
   onResetAction: () => void;
+  onTrackGuestAction: () => void;
 };
 
-export default function LinkConfirmation({ session, guestLink, onResetAction }: Props) {
+export default function LinkConfirmation({ session, guestLink, isGuestActive, onResetAction, onTrackGuestAction }: Props) {
   const [copied, setCopied] = useState(false);
   const [showQr, setShowQr] = useState(false);
 
@@ -50,21 +52,21 @@ export default function LinkConfirmation({ session, guestLink, onResetAction }: 
   return (
     <div className="animate-in-fade space-y-6">
       {/* Header */}
-      <div className="text-center mb-8">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 mb-4 animate-in-bounce">
-          <Check className="w-8 h-8 text-emerald-600" strokeWidth={3} />
+      <div className="text-center mb-6 sm:mb-8">
+        <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-emerald-100 mb-3 sm:mb-4 animate-in-bounce">
+          <Check className="w-7 h-7 sm:w-8 sm:h-8 text-emerald-600" strokeWidth={3} />
         </div>
-        <h1 className="text-2xl font-extrabold text-navy-600 mb-2 animate-in-slide-up">
+        <h1 className="text-xl sm:text-2xl font-extrabold text-navy-600 mb-1 sm:mb-2 animate-in-slide-up">
           Location Ready!
         </h1>
-        <p className="text-sm text-navy-400 font-medium animate-in-slide-up-limited [animation-delay:200ms]">
+        <p className="text-[13px] sm:text-sm text-navy-400 font-medium animate-in-slide-up-limited [animation-delay:200ms]">
           Your guest can now find you at{' '}
           <span className="text-navy-600 font-bold">{session.orgName}</span>
         </p>
       </div>
 
       {/* Sharing Card */}
-      <GlassCard className="p-8 space-y-8">
+      <GlassCard className="p-6 sm:p-8 space-y-6 sm:space-y-8">
         {/* Link Box */}
         <div className="space-y-3">
           <label className="text-[10px] font-extrabold text-navy-300 uppercase tracking-widest ml-1">
@@ -123,15 +125,32 @@ export default function LinkConfirmation({ session, guestLink, onResetAction }: 
 
       {/* Bottom links */}
       <div className="flex flex-col gap-3 pt-4">
-        <a
-          href={guestLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 text-sm font-bold text-accent-500 hover:text-accent-600 transition-colors py-2"
+        <button
+          onClick={onTrackGuestAction}
+          disabled={!isGuestActive}
+          className={`flex items-center justify-center gap-2 text-sm font-bold text-white transition-colors py-3.5 rounded-2xl shadow-lg relative overflow-hidden group ${
+            isGuestActive 
+              ? 'bg-accent-500 hover:bg-accent-600' 
+              : 'bg-navy-300 cursor-not-allowed opacity-80'
+          }`}
         >
-          <ExternalLink size={16} />
-          Preview guest view
-        </a>
+          {isGuestActive && <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />}
+          {isGuestActive ? (
+            <>
+              <Target size={18} className="animate-pulse" />
+              Track Guest Live
+            </>
+          ) : (
+            <>
+              <span className="flex h-2 w-2 relative mx-1">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+              </span>
+              Waiting for Guest...
+            </>
+          )}
+        </button>
+
         <button
           onClick={onResetAction}
           className="flex items-center justify-center gap-2 text-sm font-bold text-navy-300 hover:text-navy-400 transition-colors py-2"

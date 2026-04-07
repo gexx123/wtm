@@ -1,6 +1,7 @@
 import React from 'react';
 import { UseFormReturn } from 'react-hook-form';
-import { MapPin, User, Building2, Navigation, Info } from 'lucide-react';
+import { MapPin, User, Building2, Info } from 'lucide-react';
+import Image from 'next/image';
 import { HostFormValues } from './HostScreenClient';
 import CustomButton from '@/components/ui/CustomButton';
 import GlassCard from '@/components/ui/GlassCard';
@@ -24,20 +25,26 @@ export default function HostForm({ form, onSubmit, isCapturing, accuracy, error,
   return (
     <div className="animate-in-slide-up">
       {/* Hero section */}
-      <div className="text-center mb-10">
-        <div className="inline-flex items-center justify-center w-20 h-20 rounded-[2.5rem] bg-navy-600 shadow-button mb-6 animate-bounce-soft">
-          <Navigation className="w-10 h-10 text-white" strokeWidth={1.5} />
+      <div className="text-center mb-6 sm:mb-8">
+        <div className="relative inline-flex items-center justify-center w-full max-w-[450px] mb-4 sm:mb-6 px-4 group">
+          {/* Professional Glow Background */}
+          <div className="absolute inset-0 bg-accent-500/5 blur-[100px] rounded-full scale-125" />
+          
+          <div className="relative w-full aspect-[16/10] rounded-[2.5rem] border-4 border-white shadow-2xl overflow-hidden bg-white/60 backdrop-blur-md transition-all duration-700 transform hover:scale-[1.02]">
+            <img 
+              src="/assets/image.png" 
+              alt="WayTm Campus" 
+              className="w-full h-full object-cover drop-shadow-md"
+            />
+          </div>
         </div>
-        <h1 className="text-3xl font-extrabold text-navy-600 mb-3 tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-navy-600 mb-0 tracking-tight">
           Share Your Location
         </h1>
-        <p className="text-base text-navy-400 leading-relaxed max-w-sm mx-auto font-medium">
-          Create a personalized navigation link for your guests. Professional, simple, and secure.
-        </p>
       </div>
 
       {/* Form card */}
-      <GlassCard className="p-8">
+      <GlassCard className="p-6 sm:p-8">
         <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
           {/* Host Name */}
           <div className="space-y-2">

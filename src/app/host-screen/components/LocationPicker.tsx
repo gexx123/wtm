@@ -112,8 +112,6 @@ export default function LocationPicker({ initialCoords, hostName, accuracy, onCo
       LRef.current = L;
       if (!isMounted) return;
 
-      await import('leaflet/dist/leaflet.css');
-
       // Adaptive zoom: if accuracy is bad (>100m), zoom out so user sees more area
       const initialZoom = accuracy && accuracy > 100 ? 15 : accuracy && accuracy > 30 ? 17 : 18;
 
@@ -193,12 +191,22 @@ export default function LocationPicker({ initialCoords, hostName, accuracy, onCo
     };
   }, [initialCoords, hostName, accuracy]);
 
+  // Fix for white patches: invalidate size after a small delay to ensure full render
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.invalidateSize();
+      }
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [mapInstanceRef.current]);
+
   return (
-    <div className="animate-in-fade flex flex-col gap-5">
+    <div className="animate-in-fade flex flex-col gap-4 sm:gap-5">
       {/* Header */}
       <div className="text-center">
-        <h1 className="text-2xl font-black text-navy-600 mb-2">Confirm Your Location</h1>
-        <p className="text-sm text-navy-400 font-medium">
+        <h1 className="text-xl sm:text-2xl font-black text-navy-600 mb-2">Confirm Your Location</h1>
+        <p className="text-[13px] sm:text-sm text-navy-400 font-medium">
           Move the pin to your <span className="text-navy-600 font-bold">exact</span> spot, or search for your building below.
         </p>
       </div>
@@ -258,7 +266,7 @@ export default function LocationPicker({ initialCoords, hostName, accuracy, onCo
       </div>
 
       {/* Map */}
-      <GlassCard className="!p-0 !rounded-[2rem] overflow-hidden shadow-2xl relative border-white/40 h-[380px]">
+      <GlassCard className="!p-0 !rounded-[2rem] overflow-hidden shadow-2xl relative border-white/40 h-[280px] sm:h-[380px]">
         <div ref={mapRef} className="w-full h-full" />
 
         {/* Map Controls */}

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Toaster } from 'sonner';
 import WelcomeCard from './WelcomeCard';
 import MapView from './MapView';
@@ -35,6 +35,7 @@ export default function GuestNavigationClient() {
   const [hostData, setHostData] = useState<HostData | null>(null);
   const [guestCoords, setGuestCoords] = useState<GuestCoords | null>(null);
   const [geoErrorMsg, setGeoErrorMsg] = useState('');
+  const lastUpdateRef = useRef(0);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -86,10 +87,26 @@ export default function GuestNavigationClient() {
       return;
     }
 
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setGuestCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-        setAppState('navigating');
+    // Use watchPosition for real-time tracking
+    const watchId = navigator.geolocation.watchPosition(
+      async (pos) => {
+        const { latitude, longitude } = pos.coords;
+        setGuestCoords({ lat: latitude, lng: longitude });
+        
+        // Transition to navigating state if not already
+        setAppState((prev) => (prev === 'welcome' || prev === 'geo-error' ? 'navigating' : prev));
+
+        // Throttle database updates to once every 3 seconds
+        const now = Date.now();
+        if (now - lastUpdateRef.current > 3000) {
+          lastUpdateRef.current = now;
+          if (hostData?.id) {
+            await supabase
+              .from('host_sessions')
+              .update({ guest_lat: latitude, guest_lng: longitude })
+              .eq('id', hostData.id);
+          }
+        }
       },
       (err) => {
         let msg = 'Unable to access your location.';
@@ -103,6 +120,10 @@ export default function GuestNavigationClient() {
       },
       { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 }
     );
+
+    // Save watchId to state or ref if we needed to clear it later when they leave the page
+    // but since they stay on this page to navigate, it's fine running.
+
   };
 
   return (
@@ -135,8 +156,19 @@ export default function GuestNavigationClient() {
             </button>
             {process.env.NODE_ENV === 'development' && (
               <button
-                onClick={() => {
-                  setGuestCoords({ lat: hostData.lat - 0.008, lng: hostData.lng - 0.005 });
+                onClick={async () => {
+                  const devLat = hostData.lat - 0.008;
+                  const devLng = hostData.lng - 0.005;
+                  setGuestCoords({ lat: devLat, lng: devLng });
+                  
+                  // Push to Supabase so Host auto-track fires in dev mode
+                  if (hostData?.id) {
+                    await supabase
+                      .from('host_sessions')
+                      .update({ guest_lat: devLat, guest_lng: devLng })
+                      .eq('id', hostData.id);
+                  }
+                  
                   setAppState('navigating');
                 }}
                 className="w-full mt-3 bg-slate-100 hover:bg-slate-200 text-navy-600 font-semibold text-sm py-3.5 rounded-xl transition-all duration-150"

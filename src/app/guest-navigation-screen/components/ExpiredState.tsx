@@ -17,16 +17,16 @@ export default function ExpiredState({ hostData }: Props) {
       <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[40%] rounded-full bg-red-600/10 blur-[120px]" />
       <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-navy-400/10 blur-[100px]" />
 
-      <div className="relative z-10 w-full max-w-sm text-center animate-in-slide-up">
-        <div className="w-20 h-20 rounded-[2rem] bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-8 shadow-2xl">
-          <Clock className="w-10 h-10 text-red-500" />
+      <div className="relative z-10 w-full max-w-sm text-center animate-in-slide-up px-6 sm:px-0">
+        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl sm:rounded-[2rem] bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-6 sm:mb-8 shadow-2xl">
+          <Clock className="w-8 h-8 sm:w-10 sm:h-10 text-red-500" />
         </div>
 
-        <h2 className="text-3xl font-extrabold text-white mb-4 tracking-tight">Link Expired</h2>
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-3 sm:mb-4 tracking-tight">Link Expired</h2>
 
-        <GlassCard className="mb-8 !bg-white/5 border-white/10 p-6">
-          <div className="flex items-start gap-4 text-left">
-            <AlertCircle className="text-red-400 shrink-0 mt-1" size={20} />
+        <GlassCard className="mb-6 sm:mb-8 !bg-white/5 border-white/10 p-5 sm:p-6">
+          <div className="flex items-start gap-3 sm:gap-4 text-left">
+            <AlertCircle className="text-red-400 shrink-0 mt-1" size={18} />
             <div>
               <p className="text-white/90 text-sm font-bold mb-1">Safety First</p>
               <p className="text-white/60 text-xs leading-relaxed font-medium">

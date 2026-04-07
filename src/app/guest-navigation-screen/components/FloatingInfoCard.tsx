@@ -46,99 +46,95 @@ export default function FloatingInfoCard({
           className={`h-1.5 w-full mb-[-1.5px] transition-colors duration-500 ${isDrive ? 'bg-emerald-500' : 'bg-navy-600/10'}`}
         />
 
-        <div className="px-6 pt-5 pb-4">
+        <div className="px-5 sm:px-6 pt-4 sm:pt-5 pb-3 sm:pb-4">
           {/* Header: Host Info */}
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-navy-600 flex items-center justify-center shadow-lg transform -rotate-3">
-                <Navigation2 className="w-5 h-5 text-white" fill="white" />
+          <div className="flex items-start justify-between mb-3 sm:mb-4">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-navy-600 flex items-center justify-center shadow-lg transform -rotate-3">
+                <Navigation2 className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="white" />
               </div>
               <div className="flex flex-col">
-                <h3 className="text-navy-600 font-extrabold text-base tracking-tight leading-tight">
+                <h3 className="text-navy-600 font-extrabold text-sm sm:text-base tracking-tight leading-tight">
                   {hostData.hostName}
                 </h3>
-                <p className="text-navy-400 text-xs font-bold uppercase tracking-wider">
+                <p className="text-navy-400 text-[10px] font-bold uppercase tracking-wider">
                   {hostData.orgName}
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-xl">
+            <div className="flex items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl">
               <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-emerald-600 text-[10px] font-extrabold uppercase tracking-widest">
+              <span className="text-emerald-600 text-[9px] sm:text-[10px] font-extrabold uppercase tracking-widest whitespace-nowrap">
                 Live
               </span>
             </div>
           </div>
 
           {/* Mode Switcher */}
-          <div className="bg-slate-100/80 p-1.5 rounded-2xl flex items-center gap-1.5 mb-5 relative overflow-hidden backdrop-blur-sm border border-slate-200">
+          <div className="bg-slate-100/80 p-1 rounded-xl sm:rounded-2xl flex items-center gap-1 sm:gap-1.5 mb-4 sm:mb-5 relative overflow-hidden backdrop-blur-sm border border-slate-200">
             <button
               onClick={() => onModeChange('walk')}
-              className={`flex-[0.5] py-2.5 rounded-xl flex items-center justify-center gap-2 text-xs font-bold transition-all z-10 ${
+              className={`flex-1 py-2 sm:py-2.5 rounded-lg sm:rounded-xl flex items-center justify-center gap-2 text-[11px] sm:text-xs font-bold transition-all z-10 ${
                 !isDrive
                   ? 'bg-white text-accent-600 shadow-sm'
                   : 'text-slate-400 hover:text-slate-600'
               }`}
             >
-              <Footprints size={16} />
+              <Footprints size={14} className="sm:w-4 sm:h-4" />
               Walk
             </button>
             <button
               onClick={() => onModeChange('drive')}
-              className={`flex-[0.5] py-2.5 rounded-xl flex items-center justify-center gap-2 text-xs font-bold transition-all z-10 ${
+              className={`flex-1 py-2 sm:py-2.5 rounded-lg sm:rounded-xl flex items-center justify-center gap-2 text-[11px] sm:text-xs font-bold transition-all z-10 ${
                 isDrive
                   ? 'bg-white text-emerald-600 shadow-sm'
                   : 'text-slate-400 hover:text-slate-600'
               }`}
             >
-              <Car size={16} />
+              <Car size={14} className="sm:w-4 sm:h-4" />
               Drive
             </button>
           </div>
 
           {/* Stats section */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4 sm:gap-6">
             {routeLoading ? (
               <div className="flex-1 flex gap-4 animate-pulse">
-                <div className="h-10 w-24 bg-slate-100 rounded-xl" />
-                <div className="h-10 w-24 bg-slate-100 rounded-xl" />
+                <div className="h-8 sm:h-10 w-20 sm:w-24 bg-slate-100 rounded-lg sm:rounded-xl" />
+                <div className="h-8 sm:h-10 w-20 sm:w-24 bg-slate-100 rounded-lg sm:rounded-xl" />
               </div>
             ) : (
               <>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 sm:gap-3">
                   <div
-                    className={`w-10 h-10 rounded-xl flex items-center justify-center ${isDrive ? 'bg-emerald-500/10' : 'bg-accent-500/10'}`}
+                    className={`w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center ${isDrive ? 'bg-emerald-500/10' : 'bg-accent-500/10'}`}
                   >
                     <Clock
-                      className={`w-5 h-5 ${isDrive ? 'text-emerald-600' : 'text-accent-600'}`}
+                      className={`w-4 h-4 sm:w-5 sm:h-5 ${isDrive ? 'text-emerald-600' : 'text-accent-600'}`}
                     />
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-navy-600 font-black text-lg leading-tight tabular-nums">
+                    <span className="text-navy-600 font-black text-base sm:text-lg leading-tight tabular-nums whitespace-nowrap">
                       {routeInfo ? formatDuration(routeInfo.durationSeconds) : '--'}
                     </span>
-                    <span className="text-navy-400 text-[10px] font-bold uppercase tracking-widest leading-none">
+                    <span className="text-navy-400 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest leading-none">
                       ETA
                     </span>
                   </div>
                 </div>
 
-                <div className="w-px h-8 bg-black/[0.04]" />
+                <div className="w-px h-6 sm:h-8 bg-black/[0.04]" />
 
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center">
-                    {isDrive ? (
-                      <Car className="w-5 h-5 text-slate-500" />
-                    ) : (
-                      <Footprints className="w-5 h-5 text-slate-500" />
-                    )}
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-slate-100 flex items-center justify-center text-slate-500">
+                    {isDrive ? <Car className="w-4 h-4 sm:w-5 sm:h-5" /> : <Footprints className="w-4 h-4 sm:w-5 sm:h-5" />}
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-navy-500 font-black text-lg leading-tight tabular-nums">
+                    <span className="text-navy-500 font-black text-base sm:text-lg leading-tight tabular-nums whitespace-nowrap">
                       {routeInfo ? formatDistance(routeInfo.distanceMeters) : '--'}
                     </span>
-                    <span className="text-navy-400 text-[10px] font-bold uppercase tracking-widest leading-none">
+                    <span className="text-navy-400 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest leading-none">
                       Distance
                     </span>
                   </div>

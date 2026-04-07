@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Navigation, MapPin, Sparkles } from 'lucide-react';
+import Image from 'next/image';
 import { HostData } from './GuestNavigationClient';
 import CustomButton from '@/components/ui/CustomButton';
 
@@ -16,13 +17,6 @@ export default function WelcomeCard({ hostData, onGetDirections }: Props) {
     onGetDirections();
   };
 
-  const initials = hostData.hostName
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .slice(0, 2)
-    .toUpperCase();
-
   return (
     <div className="min-h-screen flex flex-col bg-[#0A1126] relative overflow-hidden font-jakarta">
       {/* Animated background elements */}
@@ -30,46 +24,47 @@ export default function WelcomeCard({ hostData, onGetDirections }: Props) {
       <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-navy-400/20 blur-[100px]" />
       <div className="absolute top-[20%] left-[10%] w-px h-[40%] bg-gradient-to-b from-transparent via-white/10 to-transparent" />
 
-      {/* Top brand header */}
       <div className="relative z-10 px-6 pt-10 pb-4 flex flex-col items-center animate-in-fade">
-        <div className="flex items-center gap-2 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl px-4 py-2 mb-6">
-          <Sparkles className="w-4 h-4 text-accent-400" />
+        <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl px-4 py-2 mb-6">
           <span className="text-white/80 text-[10px] font-bold tracking-[0.2em] uppercase">
-            Campus Guest Access
+            Welcome to Mody University
           </span>
         </div>
       </div>
 
       {/* Main content area */}
-      <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-8 text-center animate-in-slide-up pb-12">
+      <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 sm:px-8 text-center animate-in-slide-up pb-8 sm:pb-12">
         {/* Host Profile Image/Initials */}
-        <div className="relative mb-8">
-          <div className="absolute inset-0 bg-accent-500 blur-2xl opacity-20 animate-pulse" />
-          <div className="relative w-28 h-28 rounded-[2.5rem] bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-xl border-2 border-white/20 flex items-center justify-center shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
-            <span className="text-4xl font-extrabold text-white tracking-tighter drop-shadow-sm">
-              {initials}
-            </span>
+        <div className="relative mb-6 sm:mb-8 w-full max-w-[320px] sm:max-w-[400px]">
+          <div className="absolute inset-0 bg-accent-500 blur-[80px] opacity-10 animate-pulse" />
+          <div className="relative w-full aspect-[16/10] rounded-[2.5rem] border-4 border-white shadow-2xl overflow-hidden bg-white/10 backdrop-blur-md transition-all duration-700 transform hover:scale-[1.02]">
+            <Image 
+              src="/assets/image.png" 
+              alt="WayTm Campus" 
+              fill
+              className="object-cover"
+            />
           </div>
-          <div className="absolute -bottom-2 -right-2 w-10 h-10 rounded-2xl bg-accent-500 flex items-center justify-center border-4 border-[#0A1126] shadow-lg">
-            <MapPin size={18} className="text-white" />
+          <div className="absolute -bottom-2 -right-2 w-10 h-10 sm:w-12 sm:h-12 rounded-2xl sm:rounded-[1.5rem] bg-accent-500 flex items-center justify-center border-4 border-[#0A1126] shadow-lg z-20">
+            <MapPin size={18} className="text-white sm:w-6 sm:h-6" />
           </div>
         </div>
 
         {/* Typography stack */}
-        <div className="space-y-4 mb-12">
+        <div className="space-y-3 sm:space-y-4 mb-8 sm:mb-12">
           <div>
-            <p className="text-accent-400 text-xs font-bold uppercase tracking-[0.15em] mb-3">
+            <p className="text-accent-400 text-xs font-bold uppercase tracking-[0.15em] mb-2 sm:mb-3">
               You are visiting
             </p>
-            <h1 className="text-4xl font-extrabold text-white leading-tight tracking-tight">
+            <h1 className="text-2xl sm:text-4xl font-extrabold text-white leading-tight tracking-tight">
               {hostData.orgName}
             </h1>
           </div>
 
           <div className="h-px w-12 bg-white/20 mx-auto" />
 
-          <p className="text-white/70 text-lg font-medium">
-            Hosted by <span className="text-white font-bold">{hostData.hostName}</span>
+          <p className="text-white/70 text-base sm:text-lg font-medium">
+            <span className="text-white font-bold">{hostData.hostName}</span> is waiting for you
           </p>
         </div>
 
