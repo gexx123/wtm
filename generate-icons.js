@@ -10,67 +10,66 @@ const splashSource = path.join(__dirname, 'public', 'assets', 'mody-logo.png');
 const publicDir = path.join(__dirname, 'public');
 
 async function generateIcons() {
-  console.log('Generating PWA icons with split sources (Favicon vs Splash)...');
+  console.log('Generating PWA icons with Hard Fix for Splash branding...');
 
   try {
     const bg = { r: 255, g: 255, b: 255, alpha: 1 };
     
-    // 192x192 (Android/PWA Icon - Using favicon.png)
+    // 1. Android/PWA Icon (192x192 from favicon.png)
     await sharp(iconSource)
       .trim()
-      .resize(192, 192, { 
-        fit: 'contain',
-        background: bg,
-        kernel: 'lanczos3'
-      })
+      .resize(192, 192, { fit: 'contain', background: bg })
       .flatten({ background: bg })
       .toFile(path.join(publicDir, 'icon-192.png'));
-    console.log('✅ Generated icon-192.png (from favicon.png)');
+    console.log('✅ Generated icon-192.png');
 
-    // 512x512 (Splash Screen Icon - Using mody-logo.png)
+    // 2. Standard Splash Icon (512x512 from mody-logo.png)
     await sharp(splashSource)
       .trim()
-      .resize(512, 512, { 
-        fit: 'contain',
-        background: bg,
-        kernel: 'lanczos3'
-      })
+      .resize(512, 512, { fit: 'contain', background: bg })
       .flatten({ background: bg })
       .toFile(path.join(publicDir, 'icon-512.png'));
-    console.log('✅ Generated icon-512.png (from mody-logo.png)');
+    console.log('✅ Generated icon-512.png');
 
-    // 180x180 (Apple Touch Icon - Using favicon.png)
-    await sharp(iconSource)
+    // 3. NEW: Maskable Splash Icon (512x512 with Safe Zone padding)
+    // Maskable icons need ~10% padding to avoid being cut off by phone masks
+    await sharp(splashSource)
       .trim()
-      .resize(180, 180, { 
-        fit: 'contain',
-        background: bg,
-        kernel: 'lanczos3'
+      .resize(Math.round(512 * 0.8), Math.round(512 * 0.8), { 
+        fit: 'contain', 
+        background: bg 
+      })
+      .extend({
+        top: Math.round(512 * 0.1),
+        bottom: Math.round(512 * 0.1),
+        left: Math.round(512 * 0.1),
+        right: Math.round(512 * 0.1),
+        background: bg
       })
       .flatten({ background: bg })
-      .toFile(path.join(publicDir, 'apple-icon.png'));
-    console.log('✅ Generated apple-icon.png (from favicon.png)');
+      .toFile(path.join(publicDir, 'icon-maskable-512.png'));
+    console.log('✅ Generated icon-maskable-512.png (Hard Fix Activated)');
 
-    // Generate temporary 64x64 PNG for ICO conversion (Using favicon.png)
+    // 4. Apple Touch Icon (180x180 from favicon.png)
+    await sharp(iconSource)
+      .trim()
+      .resize(180, 180, { fit: 'contain', background: bg })
+      .flatten({ background: bg })
+      .toFile(path.join(publicDir, 'apple-icon.png'));
+    console.log('✅ Generated apple-icon.png');
+
+    // 5. Favicon ICO (64x64 from favicon.png)
     const tempIcoPng = path.join(publicDir, 'temp-64.png');
     await sharp(iconSource)
       .trim()
-      .resize(64, 64, { 
-        fit: 'contain', 
-        background: bg,
-        kernel: 'lanczos3'
-      })
+      .resize(64, 64, { fit: 'contain', background: bg })
       .toFile(tempIcoPng);
-
-    // Convert to true .ico format
     const buf = await pngToIco(tempIcoPng);
     fs.writeFileSync(path.join(publicDir, 'favicon.ico'), buf);
-    console.log('✅ Generated favicon.ico (from favicon.png)');
-
-    // Cleanup temp file
     fs.unlinkSync(tempIcoPng);
+    console.log('✅ Generated favicon.ico');
     
-    console.log('🎉 Icons successfully synchronized with split branding!');
+    console.log('🎉 Icons successfully generated with Maskable Hard Fix!');
   } catch (err) {
     console.error('❌ Error generating icons:', err);
   }
